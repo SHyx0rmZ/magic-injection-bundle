@@ -37,6 +37,7 @@ class MagicInjectionPass implements CompilerPassInterface
     {
         $annotation = new AnnotationReader();
         $annotation = $annotation->getPropertyAnnotation($property, MagicInjection::class);
+
         return $annotation;
     }
 
@@ -73,12 +74,13 @@ class MagicInjectionPass implements CompilerPassInterface
             'type' => $annotation->getType(),
             'injector' => new Reference('magic_injection.injector')
         ));
+
         return $wrapper;
     }
 
     /**
      * @param Definition $targetDefinition
-     * @param Wrapper $wrapperDefinition
+     * @param Definition $wrapperDefinition
      */
     private function setFactory(Definition $targetDefinition, Definition $wrapperDefinition)
     {
@@ -99,19 +101,33 @@ class MagicInjectionPass implements CompilerPassInterface
         $annotationFound = false;
 
         foreach ($reflectionClass->getProperties() as $property) {
-            $annotation = $this->getMagicInjectionAnnotation($property);
-
-            if ($annotation !== null) {
-                $annotationFound = true;
-
-                $wrapper = $this->registerNewFactory($container, $id, $property, $annotation);
-
-                $this->setFactory($targetDefinition, $wrapper);
-            }
+            $annotationFound = $this->setupAnnotatedPropertyInjection($container, $id, $property);
         }
 
         if (!$annotationFound) {
             throw new \RuntimeException(sprintf('No MagicInjection annotation found in service: %s', $id));
         }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param string $id
+     * @param \ReflectionProperty $property
+     * @return bool
+     */
+    private function setupAnnotatedPropertyInjection(ContainerBuilder $container, $id, \ReflectionProperty $property)
+    {
+        $annotation = $this->getMagicInjectionAnnotation($property);
+
+        if ($annotation !== null) {
+            $targetDefinition = $container->getDefinition($id);
+            $wrapperDefinition = $this->registerNewFactory($container, $id, $property, $annotation);
+
+            $this->setFactory($targetDefinition, $wrapperDefinition);
+
+            return true;
+        }
+
+        return false;
     }
 }
