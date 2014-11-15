@@ -37,14 +37,17 @@ class MagicInjectionPass implements CompilerPassInterface
 
                 if ($annotation !== null) {
                     $annotationFound = true;
-                    $container
-                        ->register($id . '.magic_injection.decorator.' . $property->getName(), Wrapper::class)
-                        ->addArgument(new Reference('magic_injection.injector'))
-                        ->addArgument($property->getName())
-                        ->addArgument($annotation->getType())
-                        ->addArgument(new Reference($id . '.magic_injection.decorator.' . $property->getName() . '.inner'))
-                        ->setPublic(false)
-                        ->setDecoratedService($id);
+
+                    $wrapper = $container->register($id . '.factory.' . $property->getName(), Wrapper::class);
+                    $wrapper->setProperties(array(
+                        'class' => $targetClass,
+                        'property' => $property->getName(),
+                        'type' => $annotation->getType(),
+                        'injector' => new Reference('magic_injection.injector')
+                    ));
+
+                    $targetDefinition->setFactoryService('magic_injection.factory')->setFactoryMethod('get');
+                    $targetDefinition->addArgument($wrapper);
                 }
             }
 
