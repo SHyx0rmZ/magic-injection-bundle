@@ -19,6 +19,22 @@ class Factory
     }
 
     /**
+     * @param null|object $object
+     * @param string $class
+     * @param array $arguments
+     * @return object
+     */
+    private function ensureObjectInstantiated($object, $class, array $arguments)
+    {
+        if ($object === null) {
+            $class = new \ReflectionClass($class);
+            $object = $class->newInstanceArgs($arguments);
+        }
+
+        return $object;
+    }
+
+    /**
      * @param array $arguments
      * @return int
      */
@@ -37,22 +53,6 @@ class Factory
     }
 
     /**
-     * @param object $object
-     * @param string $class
-     * @param array $arguments
-     * @return object
-     */
-    private function ensureObjectInstantiated($object, $class, array $arguments)
-    {
-        if ($object === null) {
-            $class = new \ReflectionClass($class);
-            $object = $class->newInstanceArgs($arguments);
-        }
-
-        return $object;
-    }
-
-    /**
      * @param array $arguments
      * @param integer $regularArguments
      * @return object
@@ -63,6 +63,7 @@ class Factory
         $wrappers = array_splice($arguments, $regularArguments);
         $object = null;
 
+        /** @var Wrapper $wrapper */
         foreach ($wrappers as $wrapper) {
             $object = $this->ensureObjectInstantiated($object, $wrapper->class, $arguments);
 
