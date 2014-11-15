@@ -1,0 +1,24 @@
+{
+    "name": "ppokatilo/magic-injection-bundle",
+    "type": "symfony-bundle",
+    "description": "Magically inject dependencies into services",
+    "keywords": [ "symfony", "bundle", "injection", "magic", "service" ],
+    "homepage": "http://github.com/SHyx0rmZ/magic-injection-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Patrick Pokatilo",
+            "email": "mail@shyxormz.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "SHyx0rmZ\\MagicInjection\\": "" }
+    },
+    "require": {
+        "php": ">=5.3.2",
+        "doctrine/annotations": "1.*",
+        "symfony/config": "~2.0",
+        "symfony/dependency-injection": "~2.0",
+        "symfony/http-kernel": "~2.0"
+    }
+}
