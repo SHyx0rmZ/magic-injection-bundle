@@ -39,6 +39,7 @@ class MagicInjectionPass implements CompilerPassInterface
                     $annotationFound = true;
 
                     $wrapper = $container->register($id . '.factory.' . $property->getName(), Wrapper::class);
+                    $wrapper->setPublic(false);
                     $wrapper->setProperties(array(
                         'class' => $targetClass,
                         'property' => $property->getName(),
