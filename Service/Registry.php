@@ -6,6 +6,9 @@ class Registry implements RegistryInterface
 {
     protected $injectables = array();
 
+    /**
+     * @inheritdoc
+     */
     public function registerInjectable($injectable, $type = null)
     {
         $name = explode('\\', get_class($injectable));
@@ -22,6 +25,9 @@ class Registry implements RegistryInterface
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getInjectable($name, $type = null)
     {
         if ($type === null) {
