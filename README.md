@@ -7,7 +7,7 @@ will **not** be available in the constructor. To use it, you need to complete th
 1. Add the tag `magic_injection.injectable_service` to the service you wish to inject. The tag takes
 an optional argument called `type`, which you can use to group injectable services.
 2. Add the tag
-`magic_injection.injector_target` to the service which should receive the injected services.
+`magic_injection.injection_target` to the service which should receive the injected services.
 3. Finally, annotate properties with the `MagicInjection` annotation, which will take an optional `type`
 argument that refers to a group of injectable services.
 
@@ -25,7 +25,7 @@ Example usage
     service.that.has.a.dependency:
       class: Service\MyServiceB
       tags:
-        - { name: magic_injection.injector_target }
+        - { name: magic_injection.injection_target }
   ```
 * MyServiceB.php
   ```php
