@@ -4,28 +4,67 @@ namespace SHyx0rmZ\MagicInjection\Service;
 
 class Factory
 {
-    public function get()
+    /**
+     * Creates a new instance of some service that needs other services injected. Do not use manually.
+     * @return object
+     */
+    public function createInstance()
     {
-        $arguments = 0;
+        $arguments = func_get_args();
 
-        foreach (func_get_args() as $argument) {
+        $regularArguments = $this->getNumberOfRegularArguments($arguments);
+        $object = $this->getObjectWithServicesInjected($arguments, $regularArguments);
+
+        return $object;
+    }
+
+    /**
+     * @param array $arguments
+     * @return int
+     */
+    private function getNumberOfRegularArguments(array $arguments)
+    {
+        $regularArguments = 0;
+
+        foreach ($arguments as $argument) {
             if ($argument instanceof Wrapper) {
                 break;
             }
 
-            $arguments++;
+            $regularArguments++;
+        }
+        return $regularArguments;
+    }
+
+    /**
+     * @param object $object
+     * @param string $class
+     * @param array $arguments
+     * @return object
+     */
+    private function ensureObjectInstantiated($object, $class, array $arguments)
+    {
+        if ($object === null) {
+            $class = new \ReflectionClass($class);
+            $object = $class->newInstanceArgs($arguments);
         }
 
+        return $object;
+    }
+
+    /**
+     * @param array $arguments
+     * @param integer $regularArguments
+     * @return object
+     */
+    private function getObjectWithServicesInjected(array $arguments, $regularArguments)
+    {
+        /** @var Wrapper[] $serviceWrappers */
+        $wrappers = array_splice($arguments, $regularArguments);
         $object = null;
 
-        for ($i = $arguments; $i < func_num_args(); ++$i) {
-            /** @var Wrapper $wrapper */
-            $wrapper = func_get_arg($i);
-
-            if ($object === null) {
-                $class = new \ReflectionClass($wrapper->class);
-                $object = $class->newInstanceArgs(func_get_args());
-            }
+        foreach ($wrappers as $wrapper) {
+            $object = $this->ensureObjectInstantiated($object, $wrapper->class, $arguments);
 
             $wrapper->injector->injectService($object, $wrapper->property, $wrapper->type);
         }

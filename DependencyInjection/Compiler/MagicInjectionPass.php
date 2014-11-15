@@ -84,7 +84,7 @@ class MagicInjectionPass implements CompilerPassInterface
      */
     private function setFactory(Definition $targetDefinition, Definition $wrapperDefinition)
     {
-        $targetDefinition->setFactoryService('magic_injection.factory')->setFactoryMethod('get');
+        $targetDefinition->setFactoryService('magic_injection.factory')->setFactoryMethod('createInstance');
         $targetDefinition->addArgument($wrapperDefinition);
     }
 
