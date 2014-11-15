@@ -1,9 +1,14 @@
+parameters:
+
+  magic_injection.registry.class: SHyx0rmZ\MagicInjection\Service\Registry
+  magic_injection.injector.class: SHyx0rmZ\MagicInjection\Service\Injector
+
 services:
 
   magic_injection.registry:
-    class: SHyx0rmZ\MagicInjection\Service\Registry
+    class: %magic_injection.registry.class%
 
   magic_injection.injector:
-    class: SHyx0rmZ\MagicInjection\Service\Injector
+    class: %magic_injection.injector.class%
     arguments:
       - @magic_injection.registry
