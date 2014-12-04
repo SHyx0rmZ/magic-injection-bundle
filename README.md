@@ -1,9 +1,9 @@
 magic-injection-bundle
 ======================
-[![Latest Stable Version](https://poser.pugx.org/ppokatilo/magic-injection-bundle/v/stable.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
-[![Total Downloads](https://poser.pugx.org/ppokatilo/magic-injection-bundle/downloads.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/ppokatilo/magic-injection-bundle/v/unstable.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
-[![License](https://poser.pugx.org/ppokatilo/magic-injection-bundle/license.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
+[![Latest Stable Version](http://poser.services.witches.io/ppokatilo/magic-injection-bundle/v/stable.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
+[![Total Downloads](http://poser.services.witches.io/ppokatilo/magic-injection-bundle/downloads.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
+[![Latest Unstable Version](http://poser.services.witches.io/ppokatilo/magic-injection-bundle/v/unstable.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
+[![License](http://poser.services.witches.io/ppokatilo/magic-injection-bundle/license.svg)](https://packagist.org/packages/ppokatilo/magic-injection-bundle)
 
 This Symfony2 bundle provides a way to magically inject dependencies into your services. The dependencies
 will **not** be available in the constructor. To use it, you need to complete the following steps:
